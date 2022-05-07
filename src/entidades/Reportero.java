@@ -49,30 +49,47 @@ public class Reportero {
 	}
 
 	// en este metodo se introduce informacion en los difernetes metodos
+	//para esta 3ra evaluacion implemente una linea mas para que ingresara el if el usuario
 	public static Reportero nuevoReportero() {
-		Reportero ret = new Reportero(); // se hace el ret para poder hacer un return
-		Scanner read = new Scanner(System.in);
+		boolean val=false;
+		Reportero ret = null; // se hace el ret para poder hacer un return
+		Scanner in = new Scanner(System.in);
 		String nombreyApellidos = "";
 		String nif = "";
 		String telefono = "";
 		long id=0;
+		do {
 		System.out.println("introduce un id para el reportero");
-		read.nextLong();
+		in.nextLong();
+		val=true;
+		}while(!val);
+		val=false;
+		do {
 		System.out.print("introduce el nombre y el apellido");
-		nombreyApellidos = read.next();
+		nombreyApellidos = in.next();
+		val=true;
+		}while(!val);
+		val=false;
+		do {
 		System.out.print("introduce el NIF");
-		nif = read.next();
+		nif = in.next();
+		val=true;
+		}while(!val);
+		val=false;
+		do {
 		System.out.print("introduce el telefono");
-		telefono = read.nextLine();
-		read.close();
+		telefono = in.nextLine();
+		val=true;
+		}while(!val);
+		
+		in.close();
 		//este es con el constructor que tiene el telefono como string y el if para la base de datos
 		ret=new Reportero(id,nombreyApellidos,nif,telefono);
-    
 		return ret;// aqui se ejecuta el return
 	}
 
 	// getter de nombre y apellidos
-	public String getNombreyApellidoos() {
+	public String getNombreyApellidos() {
 		return nombreyApellidos;
 	}
 
@@ -97,12 +114,10 @@ public class Reportero {
 	}
 
 	// setter de telefono
-	public void setTelefono(String telefono) {
+	public void settelefono(String telefono) {
 		this.telefono = telefono;
 	}
 	
-	
-
 	public long getId() {
 		return id;
 	}
@@ -111,17 +126,9 @@ public class Reportero {
 		this.id = id;
 	}
 
-	public String getNombreyApellidos() {
-		return nombreyApellidos;
-	}
-
-	public String getTelefono() {
-		return telefono;
-	}
-
-	// Aqui est� los strings
+	// metodo to string para imprimir de forma correcta las consultas a la base de datos
 	public String toString() {
-		return "Reportero [NombreyApellidos=" + nombreyApellidos + ", NIF=" + nif + ", Telefono=" + telefono + "]";
+		return " id: "+id+" nombre_apellido: "+nombreyApellidos+" nif:" + nif + " Telefono: " + telefono;
 	}
 
 }

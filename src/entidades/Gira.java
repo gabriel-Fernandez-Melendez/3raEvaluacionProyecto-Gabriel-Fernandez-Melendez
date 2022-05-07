@@ -16,21 +16,31 @@ public class Gira {
 	//conciertos,y que un concierto pertenece a una sola gira
 	ArrayList<Concierto>conciertos=new ArrayList<Concierto>();
 
+	//constructor por defecto
 	public Gira() {
 	}
 	
-	
-    //
+    //constructor con todos los argumentos,no incluye el array
 	public Gira(long idGira, String nombreGira, LocalDate fechaApertura, LocalDate fechaCierre) {
 		this.idGira = idGira;
 		this.nombreGira = nombreGira;
 		this.fechaApertura = fechaApertura;
 		this.fechaCierre = fechaCierre;
-
+	}
+	
+	//constructor al quese le pasa tambien el array de conciertos
+	public Gira(long idGira, String nombreGira, LocalDate fechaApertura, LocalDate fechaCierre,ArrayList<Concierto> conciertos) {
+		super();
+		this.idGira = idGira;
+		this.nombreGira = nombreGira;
+		this.fechaApertura = fechaApertura;
+		this.fechaCierre = fechaCierre;
+		this.conciertos = conciertos;
 	}
 
+	//metodo nueva gira de la primera evaluacion (de nuevo corregi un problema en el objeto que pasaba al final con el return)
 	public static Gira nuevaGira() {
-		Gira gira1 = new Gira();
+		Gira gira1 =null;
 		Scanner teclado = new Scanner(System.in);
 		long idGira = -1;
 		String nombreGira = "";
@@ -53,8 +63,8 @@ public class Gira {
 		fechaApertura = Utiles.leerFecha();
 		System.out.print("Introduzca la fecha de cierre de la gira:");
 		fechaCierre = Utiles.leerFecha();
-		
 		teclado.close();
+		gira1= new Gira(idGira,nombreGira,fechaApertura,fechaCierre);
 		return gira1;
 	}
 
@@ -70,7 +80,7 @@ public class Gira {
 		return nombreGira;
 	}
 
-	public void setNombreUnico(String nombreGira) {
+	public void setNombreGira(String nombreGira) {
 		this.nombreGira = nombreGira;
 	}
 

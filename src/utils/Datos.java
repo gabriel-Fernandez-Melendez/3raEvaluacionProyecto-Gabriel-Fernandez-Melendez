@@ -18,7 +18,9 @@ public class Datos {
 	 *en la clase que sea necesaria  
 	 */
 	
-	
+	/*estos arrays no tendran que ser usados de nuevo, pero dejo la clase en el paquete de datos por si luego quiere  persistirse en una base de datos
+	 * con los metodos en principal hechos para ello
+	 */
 
 	// el primer numero es el id d la entidad , no su posicion en el array que empieza por cero
 	public static Concierto[]conciertos= {
@@ -49,7 +51,6 @@ public class Datos {
 
 	
 	public static Reportero[]reporteros= {
-			//como e puse autoincrement en las tablas solo le puse id a 4 de ellos 
 			new Reportero(1,"Antonio Domingez","51498665S","77664251"),new Reportero(2,"Bolson Vilvo","51498665Q","99885432"),
 			new Reportero(3,"Miles Morales","51498665L","998674445"),new Reportero(4,"Maria Domingez","548446651U","648442569"),
 			new Reportero(5,"Derek mark","587452165Q","259887654"),new Reportero(6,"Estefania Domingez","51498665X","698569246"),

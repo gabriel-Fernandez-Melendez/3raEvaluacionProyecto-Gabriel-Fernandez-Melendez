@@ -10,7 +10,7 @@ public class Utiles {
 		LocalDate ret = null;
 		int dia;
 		int mes;
-		int año;
+		int anio;
 		boolean correcto = false;
 		Scanner teclado = new Scanner(System.in);
 		do {
@@ -19,8 +19,8 @@ public class Utiles {
 			dia = teclado.nextInt();
 			System.out.println("Introduzca el mes:");
 			mes = teclado.nextInt();
-			System.out.println("Introduzca un valor para el a�o");
-			año = teclado.nextInt();
+			System.out.println("Introduzca un valor para el año");
+			anio = teclado.nextInt();
 
 			if (dia >= 1 | dia <= 31) {
 				correcto = true;
@@ -34,6 +34,12 @@ public class Utiles {
 				System.out.println("El valor del mes es invalido");
 				correcto = false;
 			}
+			//anadi esto pa que no diera error
+			if(anio<=0 |anio>=2022) {
+				correcto =true;
+			}else {
+				System.out.println("no es un año valido");
+			}
 
 		} while (!correcto);
 		teclado.close();
@@ -46,6 +52,7 @@ public class Utiles {
 		do {
 			System.out.println("Pulse s para Si o n para No");
 			respuesta = in.nextLine().charAt(0);
+			in.close();
 			if (respuesta != 's' && respuesta != 'S' && respuesta != 'n' && respuesta != 'N') {
 				System.out.println("Valor introducido incorrecto.");
 			}
@@ -71,6 +78,7 @@ public class Utiles {
 				correcto = false;
 			}
 		} while (!correcto);
+		in.close();
 		return ret;
 	}
 }

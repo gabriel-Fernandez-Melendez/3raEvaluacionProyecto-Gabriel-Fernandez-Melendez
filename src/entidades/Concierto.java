@@ -15,9 +15,7 @@ public class Concierto {
 	private long idConcierto;
 	private LocalDate fechayhor;
 	
-	
-	//conexion con Reportero un  solo reportero ya que un reportero documenta varios conciertos,en la clase reportero habra un array de 
-	//conciertos
+	//conexion con Reportero un  solo reportero ya que un reportero documenta varios conciertos,en la clase reportero habra un array de conciertos
 	private Reportero reporteroConcierto;
 	//conexion con Gira
 	private Gira Giraconciertos;
@@ -33,7 +31,7 @@ public class Concierto {
 		this.fechayhor = fechayHora;
 	}
 	
-	//constructor con todos los datos (incluyendo aquellos campos referentes a la correct conexion a la base de datos)
+	//constructor con todos los datos (incluyendo aquellos campos referentes a la correcta conexion a la base de datos)
     public Concierto(long idConcierto, LocalDate fechayhor, Reportero reporteroConcierto, Gira giraconciertos) {
 		super();
 		this.idConcierto = idConcierto;
@@ -51,14 +49,6 @@ public class Concierto {
 		this.idConcierto = idConcierto;
 	}
 
-	public LocalDate getFechayHora() {
-		return fechayhor;
-	}
-
-	public void setFechayHora(LocalDate fechayhora) {
-		fechayhor = fechayhora;
-	}
-	
     public LocalDate getFechayhor() {
 		return fechayhor;
 	}
@@ -88,9 +78,10 @@ public class Concierto {
 		return "Concierto [Identificador=" + idConcierto + ", FechayHora=" + fechayhor + "]";
 	}
 		
-	//parece estar perfectamente declarado pero no funciona	
+	//parece estar perfectamente declarado pero no funciona	(esta arreglado,en la primera evaluacion
+	//ret devolvia un objeto vacio por que no le pasaba argumentos a su constructor)
 		public static Concierto nuevoconcierto() {
-			Concierto ret = new Concierto();
+			Concierto ret = null;
 			Scanner scan =new Scanner(System.in);
 			long idConcierto = -1;
 			LocalDate fechayhor; 
@@ -99,10 +90,9 @@ public class Concierto {
 			System.out.println("indique el codigo de su descuento");
 			fechayhor = Utiles.leerFecha();
 			scan.close();
+			ret= new Concierto(idConcierto,fechayhor);
 			return ret;
-		
 	}
-		
 		
 		//metodo data para exportar los datos de un Concierto de forma ordenanda en un string 
 		//y los presenta como : <Concierto.idconcierto> "|" <Concierto.fechahora>
@@ -111,13 +101,13 @@ public class Concierto {
 			return ""+this.idConcierto+"|"+this.fechayhor;
 		}
 		
+		//metodo de la segunda evaluacion para exportar un fichero te texto a uno binario
 		private static void exportarConcierto(Concierto[]concierto) {
 			//fichero imaginado
 			String path ="Concierto.txt";
 			File f=new File(path);
 		 	FileWriter e=null;
 		 	PrintWriter escritor=null;
-		 	
 		 	try {
 		 		try {
 				e=new FileWriter(f,false);
@@ -134,7 +124,6 @@ public class Concierto {
 					escritor.close();
 				}
 			}
-		 	
 		 	}catch (IOException e1) {
 				e1.printStackTrace();
 			}
