@@ -11,7 +11,7 @@ import utils.Datos;
 import utils.Utiles;
 
 public class Concierto {
-	
+	//atributos de la clase 
 	private long idConcierto;
 	private LocalDate fechayhor;
 	
@@ -73,9 +73,9 @@ public class Concierto {
 		Giraconciertos = giraconciertos;
 	}
 
-	//metodo to String
+	//metodo to string modificado para que muestre de forma correcta los datos de la base de datos
 	public String toString() {
-		return "Concierto [Identificador=" + idConcierto + ", FechayHora=" + fechayhor + "]";
+		return "id: " + idConcierto + "fecha: " + fechayhor +"id reportero"+ reporteroConcierto.getId()+"id gira: "+Giraconciertos.getIdGira();
 	}
 		
 	//parece estar perfectamente declarado pero no funciona	(esta arreglado,en la primera evaluacion
@@ -90,6 +90,7 @@ public class Concierto {
 			System.out.println("indique el codigo de su descuento");
 			fechayhor = Utiles.leerFecha();
 			scan.close();
+			//arreglado en esta linea
 			ret= new Concierto(idConcierto,fechayhor);
 			return ret;
 	}
@@ -101,8 +102,8 @@ public class Concierto {
 			return ""+this.idConcierto+"|"+this.fechayhor;
 		}
 		
-		//metodo de la segunda evaluacion para exportar un fichero te texto a uno binario
-		private static void exportarConcierto(Concierto[]concierto) {
+		//metodo de la segunda evaluacion para exportar un fichero te texto a uno binario(no se como quitar la bombilla que sale por que no se esta utilizando el metodo)
+		public static void exportarConcierto(Concierto[]concierto) {
 			//fichero imaginado
 			String path ="Concierto.txt";
 			File f=new File(path);
@@ -126,10 +127,13 @@ public class Concierto {
 			}
 		 	}catch (IOException e1) {
 				e1.printStackTrace();
-			}
-			
-					
+			}			
 		}
+
+		
+		
+		
+		
 	
    
 	

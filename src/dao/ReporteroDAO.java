@@ -13,13 +13,14 @@ import entidades.Reportero;
 import utils.ConexBD_Agencia;
 
 public class ReporteroDAO implements operacionesCRUD<Reportero>{
-//aplicacion del patroc singleton
-	Connection c;
+//aplicacion del patron singleton(conexion y una entidad privada de la propia clase)
+	private Connection c;
 	private static ReporteroDAO r;
 	
-	//constructor privado con una llamada al 
+	//constructor privado y usando el constructor por defecto 
 	private ReporteroDAO() {}
 	
+	//un metodo en el cual paso como parametro la conexion y devuelve un objeto ReporteroDAO (siempre el mismo objeto!)
 	public static ReporteroDAO singleReportero(Connection c) {
 		if(r==null) {
 		r=new ReporteroDAO();	
@@ -30,6 +31,7 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 		return r;
 	}
 
+	//este metodo inserta una fila nueva con if en la tabla reportero
 	@Override
 	public boolean insertarConID(Reportero r) {
 		String insert="insert into reportero(id,nombre_apellido,nif_nie,telefono) values (?,?,?,?)";
@@ -57,7 +59,7 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 
 	@Override
 	public long insertarSinID(Reportero r) {
-		long ret = -1;
+		long resultad = -1;
 		String insert="insert into reportero(nombre_apellido,nif_nie,telefono)values(?,?,?)";
 		try {
 			if (this.c == null || this.c.isClosed())
@@ -66,14 +68,8 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 			pstmt.setString(1,r.getNombreyApellidos());
 			pstmt.setString(2,r.getNif());
 			pstmt.setString(3,r.gettelefono());
-			ResultSet result=pstmt.executeQuery();
-			while(result.next()) {
-				long id=result.getLong("id");
-				if (id != -1) {
-					ret = id;
-					System.out.println("el valor del id del reportero que insertaste es: "+ id);
-				}
-			}
+			resultad=pstmt.executeUpdate();
+			System.out.println("el resultado de la insercion es "+resultad);
 			c.close();
 		} catch (SQLException e) {
             System.out.println("se produjo una sql exception!");
@@ -81,7 +77,7 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 			//entiendo que este menos uno es para quereturnee un valor que inidica que no se realizo de forma correcta el insert
 			return -1;
 		}		
-		return ret;
+		return resultad;
 	}
 
 	@Override
@@ -112,7 +108,7 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 		}
 		return r;
 	}
-
+    //este metodo lee toda la tabla y mete los datos en una lista de objetos del tipo de la tabla (funciona)
 	@Override
 	public Collection<Reportero> buscarTodos() {
 		List<Reportero> colecc = new ArrayList<Reportero>();
@@ -145,20 +141,22 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 	}
 
 	//de estos metodos no hay ejempos, pero decidi intentar implementarlos con una variable auxiliar en la cual guardo los datos que meta el usuario
-	//haciendo uso del metodo nuevoxxx
+	//haciendo uso del metodo nuevoxxx (este es el unico que no logre hacer funcionar)
 	@Override
-	public boolean modificar(Reportero elemento) {
+	public boolean modificar(Reportero e) {
 		Reportero r=Reportero.nuevoReportero();
 		String update="update reportero set id=?,nombre_apellido=?,nif_nie=?,telefono=? where id=? ";
 		PreparedStatement pstmt;
 		try {
+			if (this.c == null || this.c.isClosed())
+				this.c = ConexBD_Agencia.establecerConexion();
 			pstmt = c.prepareStatement(update);
 			ResultSet result = pstmt.executeQuery();
 			while(result.next()) {
-				long id_r=r.getId();
-				String nom_r=r.getNombreyApellidos();
-				String nif_r=r.getNif();
-				String tef_r=r.gettelefono();
+				long id_r=e.getId();
+				String nom_r=e.getNombreyApellidos();
+				String nif_r=e.getNif();
+				String tef_r=e.gettelefono();
 				r.setId(id_r);
 				r.setNombreyApellidos(nom_r);
 				r.setNif(nif_r);
@@ -167,17 +165,28 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 				System.out.println("el resultado del update es: "+resultado);	
 			}
 			c.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (SQLException er) {
+			System.out.println("hubo un error de sql");
+			er.printStackTrace();
 		}
 		return false;
 	}
 
+	//este metodo elimina una fila de la tabla reportero (funciona)
 	@Override
-	public boolean eliminar(Reportero elemento) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminar(Reportero r) {
+		boolean conf=false;
+		 try {  
+				if (this.c == null || this.c.isClosed())
+					this.c = ConexBD_Agencia.establecerConexion();
+		        PreparedStatement pstmt = c.prepareStatement("delete from reportero where id ="+r.getId()+ ";");
+		        int resultado=pstmt.executeUpdate();
+		        System.out.println("resultado de tu eliminacion: "+resultado);
+		        conf= (resultado == 1);
+		    } catch(Exception e) {
+		        System.out.println(e);
+		    }
+		return conf;
 	}
 
 

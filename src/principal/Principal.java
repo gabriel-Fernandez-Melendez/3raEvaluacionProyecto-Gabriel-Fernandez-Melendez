@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.LocalDate;
 
+import dao.ConciertoDAO;
+import dao.GiraDAO;
 import dao.ReporteroDAO;
 import entidades.Concierto;
 import entidades.Gira;
@@ -32,16 +35,46 @@ public class Principal {
 		//creo dos instancias de la clase pasando como argumento la conexion 
 		ReporteroDAO R=ReporteroDAO.singleReportero(c);
 		ReporteroDAO R2=ReporteroDAO.singleReportero(c);
+		Reportero r=new Reportero(6,"prueba","prueba","prueba");
 		//aqui imprimo por pantalla el hashcode del objeto y es la misma es que es el mismo objeto que lo estoy llamando ods veces (si lo es,funciona!)
 		System.out.println(R.hashCode());
 		System.out.println(R2.hashCode());
-		//metodo para buscar por id y añadi un system.out.print para ver el resultado de la consulta en consola(funciona!s)
+		
+		//R.insertarSinID(r);
+		//metodo para buscar por id y añadi un system.out.print para ver el resultado de la consulta en consola(funciona!)
 		R.buscarPorID(1);
 		//prueba del metodo de la coleccion(funciona!)
-		R.buscarTodos();
-		//metodo de update
-		Reportero r=new Reportero();
-		R.modificar(r);
+		///R.buscarTodos();
+		//metodo de update (este no termina de funcionar)
+		//Reportero r=new Reportero(1,"vwfv","efve","svw");
+		//R.modificar(r);
+		
+		//prueba del metodo eliminar(este si funciona!)
+		//R.eliminar(r);
+		//R.insertarConID(r);
+		
+		GiraDAO G=GiraDAO.singleGira(c);
+		Gira g=new Gira(6,"prueba modificar",LocalDate.of(2016, 8, 19),LocalDate.of(2018, 8, 19));
+		
+		//metodo de insercion de gira(funciona)
+		//G.insertarConID(g);
+		
+		//funciona!
+		G.buscarPorID(2);
+		
+		//funciona!
+		//G.eliminar(g);
+		
+		//prueba de metodos de concierto
+		ConciertoDAO CON=ConciertoDAO.singleConcierto(c);
+		Concierto con=new Concierto(11,LocalDate.of(2016, 8, 19),r,g);
+		
+		//CON.insertarConID(con);
+		CON.insertarSinID(con);
+		//estos metodos de concierto dan problemas
+		CON.buscarPorID(2);
+
+		
 	}
 	
 	        //este metodo junto a los dos de abajo lo que hace es insertar los datos de los arrays en la base de datos

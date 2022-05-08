@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 //autor Germ�n
 
-///*Aqu� puse los atributos*
+///*Aqui puse los atributos
 public class Reportero {
 	private long id;
 	private String nombreyApellidos;
@@ -28,18 +28,18 @@ public class Reportero {
 		this.conciertos = conciertos;
 	}
 
-	// Aqu� est� el construcor de los atributos
+	// constructor con todos los atributos
 	public Reportero(String nombreyApellidos, String nif, String telefono) {
 		this.nombreyApellidos = nombreyApellidos;
 		this.nif = nif;
 		this.telefono = telefono;
 	}
 
-	// Aqu� est� el construcor de los Reportero
+	//contructor por defecto de Reportero
 	public Reportero() {
 	}
 	
-	//constructor con el parametro id para usaro en la base de datos
+	//constructor con el parametro id para usarlo en la base de datos
 	public Reportero(long id, String nombreyApellidos, String nif, String telefono) {
 		super();
 		this.id = id;
@@ -49,7 +49,7 @@ public class Reportero {
 	}
 
 	// en este metodo se introduce informacion en los difernetes metodos
-	//para esta 3ra evaluacion implemente una linea mas para que ingresara el if el usuario
+	//para esta 3ra evaluacion implemente una linea mas para que ingresara el id el usuario
 	public static Reportero nuevoReportero() {
 		boolean val=false;
 		Reportero ret = null; // se hace el ret para poder hacer un return
@@ -58,6 +58,7 @@ public class Reportero {
 		String nif = "";
 		String telefono = "";
 		long id=0;
+		//esta validacion que no tiene ninguna condicion, era para que no se solaparan los pasos del texto!
 		do {
 		System.out.println("introduce un id para el reportero");
 		in.nextLong();
@@ -81,9 +82,8 @@ public class Reportero {
 		telefono = in.nextLine();
 		val=true;
 		}while(!val);
-		
 		in.close();
-		//este es con el constructor que tiene el telefono como string y el if para la base de datos
+		//este es con el constructor que tiene el telefono como string y el id para la base de datos
 		ret=new Reportero(id,nombreyApellidos,nif,telefono);
 		return ret;// aqui se ejecuta el return
 	}

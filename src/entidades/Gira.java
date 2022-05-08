@@ -7,6 +7,7 @@ import java.util.Scanner;
 import utils.Utiles;
 	
 public class Gira {
+	//atributos de gira
 	private long idGira;
 	private String nombreGira;
 	private LocalDate fechaApertura;
@@ -28,7 +29,7 @@ public class Gira {
 		this.fechaCierre = fechaCierre;
 	}
 	
-	//constructor al quese le pasa tambien el array de conciertos
+	//constructor al que se le pasa tambien el array de conciertos
 	public Gira(long idGira, String nombreGira, LocalDate fechaApertura, LocalDate fechaCierre,ArrayList<Concierto> conciertos) {
 		super();
 		this.idGira = idGira;
@@ -68,6 +69,7 @@ public class Gira {
 		return gira1;
 	}
 
+	//getters y setters de la clase con nombres coherentes 
 	public long getIdGira() {
 		return idGira;
 	}
@@ -100,9 +102,9 @@ public class Gira {
 		this.fechaCierre = fechaCierre;
 	}
 
+	//metodo to string modificado para que muestre de forma correcta la informacion de la base de datos
 	public String toString() {
-		return "Gira [id=" + idGira + ", NombreGira=" + nombreGira + ", FechaApertura=" + fechaApertura + ", FechaCierre=" + fechaCierre
-				+ "]";
+		return "id: " + idGira + "nombre gira: " + nombreGira +"fecha inicio: " + fechaApertura + ",fecha fin:" + fechaCierre;
 	}
 
 }
