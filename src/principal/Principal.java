@@ -42,7 +42,7 @@ public class Principal {
 		
 		//R.insertarSinID(r);
 		//metodo para buscar por id y añadi un system.out.print para ver el resultado de la consulta en consola(funciona!)
-		R.buscarPorID(1);
+		//R.buscarPorID(1);
 		//prueba del metodo de la coleccion(funciona!)
 		///R.buscarTodos();
 		//metodo de update (este no termina de funcionar)
@@ -54,27 +54,29 @@ public class Principal {
 		//R.insertarConID(r);
 		
 		GiraDAO G=GiraDAO.singleGira(c);
-		Gira g=new Gira(6,"prueba modificar",LocalDate.of(2016, 8, 19),LocalDate.of(2018, 8, 19));
+		Gira g=new Gira("prueba modificar",LocalDate.of(2016, 8, 23),LocalDate.of(2018, 8, 24));
 		
 		//metodo de insercion de gira(funciona)
 		//G.insertarConID(g);
 		
 		//funciona!
-		G.buscarPorID(2);
+		//G.buscarPorID(2);
 		
 		//funciona!
 		//G.eliminar(g);
 		
 		//prueba de metodos de concierto
-		ConciertoDAO CON=ConciertoDAO.singleConcierto(c);
-		Concierto con=new Concierto(11,LocalDate.of(2016, 8, 19),r,g);
+		//ConciertoDAO CON=ConciertoDAO.singleConcierto(c);
+		//Concierto con=new Concierto(11,LocalDate.of(2016, 8, 19),r,g);
 		
 		//CON.insertarConID(con);
-		CON.insertarSinID(con);
+		//CON.insertarSinID(con);
 		//estos metodos de concierto dan problemas
-		CON.buscarPorID(2);
+		//CON.buscarPorID(6);
 		
-		G.buscarTodos();
+		G.insertarSinID(g);
+		
+
 
 		
 	}

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.mysql.cj.protocol.Resultset;
+
 import entidades.Gira;
 import utils.ConexBD_Agencia;
 
@@ -60,6 +62,7 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 
 	@Override
 	public long insertarSinID(Gira g) {
+		Gira gira=null;
 		long resultad = -1;
 		String insert="insert into gira(nombre_gira,fecha_ini,fecha_fin)values(?,?,?)";
 		try {
@@ -72,7 +75,30 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 			java.sql.Date fechaSQL2 = java.sql.Date.valueOf(g.getFechaCierre());
 			pstmt.setDate(3,fechaSQL2);
 			resultad=pstmt.executeUpdate();
-			System.out.println("el resultado de la insercion es "+resultad);
+			String consulta="select * from gira where (nombre_gira=? and fecha_ini=? and fecha_fin=?)";
+			pstmt = c.prepareStatement(consulta);
+			pstmt.setString(1,g.getNombreGira());
+			pstmt.setDate(2, fechaSQL);
+			pstmt.setDate(3,fechaSQL2);
+			ResultSet r=pstmt.executeQuery();
+			while(r.next()) {
+				long id=r.getLong("id");
+				String nombre=r.getString("nombre_gira");
+				java.sql.Date fechaSQL_1 =r.getDate("fecha_ini");
+				LocalDate fecha=fechaSQL_1.toLocalDate();
+				java.sql.Date fechaSQL_2 =r.getDate("fecha_fin");
+				LocalDate fecha2=fechaSQL_2.toLocalDate();
+				gira=new Gira();
+				gira.setIdGira(id);
+				gira.setNombreGira(nombre);
+				gira.setFechaApertura(fecha);
+				gira.setFechaCierre(fecha2);
+
+				
+			}
+			System.out.println("el concierto que ingreso es "+gira.toString()+"el id es "+gira.getIdGira());
+			
+			
 			c.close();
 		} catch (SQLException e) {
             System.out.println("se produjo una sql exception!");
@@ -86,6 +112,7 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 	@Override
 	public Gira buscarPorID(long id) {
 		Gira g=null;
+		Gira gira=null;
 		String select="select * from gira where id=?";
 		try {
 			if (this.c == null || this.c.isClosed())

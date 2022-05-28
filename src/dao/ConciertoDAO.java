@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 import entidades.Concierto;
+import entidades.Gira;
+import entidades.Reportero;
 import utils.ConexBD_Agencia;
 
 public class ConciertoDAO implements operacionesCRUD<Concierto> {
@@ -85,7 +87,11 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 
 	@Override
 	public Concierto buscarPorID(long id) {
-		Concierto con=null;
+		//he tenido que crear un objeto para cada una de las fk , para pasar ese objeto "entero"(solo con el id)como parametro valido
+		//he logrado eliminar el nullde sus claves foraneas!
+		Concierto con=new Concierto();
+		Reportero r=new Reportero();
+	    Gira g=new Gira();
 		String select="select * from concierto where id=?";
 		try {
 			if (this.c == null || this.c.isClosed())
@@ -97,14 +103,14 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 				long id_c=result.getLong("id");
 				java.sql.Date fechaSQL =result.getDate("fecha_concierto");
 				LocalDate fecha=fechaSQL.toLocalDate();
-				con=new Concierto();
 				long id_r =result.getLong("id_reportero");
 				long id_g=result.getLong("id_gira");
 				con.setIdConcierto(id_c);
 				con.setFechayhor(fecha);
-				//tuve que ponerlos a  null por que daba problemas al igual que antes
-				con.setReporteroConcierto(null);
-			    con.setGiraconciertos(null);
+				r.setId(id_r);
+				con.setReporteroConcierto(r);
+				g.setIdGira(id_g);
+				con.setGiraconciertos(g);	
 			}	
 			System.out.println("el resultado de tu consulta es:"+con.toString());
 			c.close();
@@ -117,7 +123,7 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 	@Override
 	public Collection<Concierto> buscarTodos() {
 		List<Concierto> colecc = new ArrayList<Concierto>();
-		String select="select * from gira";
+		String select="select * from concierto";
 		Statement pstmt;
 		try {
 			pstmt = c.createStatement();
@@ -126,13 +132,19 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 				long id_c=result.getLong("id");
 				java.sql.Date fechaSQL =result.getDate("fecha_concierto");
 				LocalDate fecha=fechaSQL.toLocalDate();
-				String nif_r=result.getString("id_reportero");
-				String tef_r=result.getString("id_concierto");
+				long id_r=result.getLong("id_reportero");
+				long id_g=result.getLong("id_concierto");
 				Concierto con=new Concierto();
+				//OJO  esta es la implementacion de una relacion 1:n con la que tenia problemas , me he dado cuenta de la necesidad
+				// de declarar los objetos de el tipo necesarios para settear sus parametros y luego pasar ese objeto "entero" al constructor de concierto
+				Reportero r =new Reportero();
+				Gira g=new Gira();
+				r.setId(id_r);
+				g.setIdGira(id_g);
 				con.setIdConcierto(id_c);
 				con.setFechayhor(fecha);
-				con.setReporteroConcierto(null);
-				con.setGiraconciertos(null);
+				con.setReporteroConcierto(r);
+				con.setGiraconciertos(g);
 				//esto tambien es para comprobar que el metodo funciona 
 				System.out.println("el resultado de tu consulta es:"+con.toString());
 				colecc.add(con);
