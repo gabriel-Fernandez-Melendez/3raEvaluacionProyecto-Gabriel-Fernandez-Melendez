@@ -68,12 +68,11 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 			PreparedStatement pstmt = c.prepareStatement(insert);
 			pstmt.setString(1,g.getNombreGira());
 			java.sql.Date fechaSQL = java.sql.Date.valueOf(g.getFechaApertura());
-			pstmt.setDate(3, fechaSQL);
+			pstmt.setDate(2, fechaSQL);
 			java.sql.Date fechaSQL2 = java.sql.Date.valueOf(g.getFechaCierre());
-			pstmt.setDate(4,fechaSQL2);
+			pstmt.setDate(3,fechaSQL2);
 			resultad=pstmt.executeUpdate();
 			System.out.println("el resultado de la insercion es "+resultad);
-			c.close();
 			c.close();
 		} catch (SQLException e) {
             System.out.println("se produjo una sql exception!");

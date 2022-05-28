@@ -38,6 +38,15 @@ public class Gira {
 		this.fechaCierre = fechaCierre;
 		this.conciertos = conciertos;
 	}
+	
+	
+
+	public Gira(String nombreGira, LocalDate fechaApertura, LocalDate fechaCierre) {
+		super();
+		this.nombreGira = nombreGira;
+		this.fechaApertura = fechaApertura;
+		this.fechaCierre = fechaCierre;
+	}
 
 	//metodo nueva gira de la primera evaluacion (de nuevo corregi un problema en el objeto que pasaba al final con el return)
 	public static Gira nuevaGira() {

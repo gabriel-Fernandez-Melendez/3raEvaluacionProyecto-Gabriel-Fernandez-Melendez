@@ -18,16 +18,18 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 	private static ReporteroDAO r;
 	
 	//constructor privado y usando el constructor por defecto 
-	private ReporteroDAO() {}
+	private ReporteroDAO(Connection c) {
+		if (c == null) {
+			c = ConexBD_Agencia.establecerConexion();
+			this.c=c;
+		}}
 	
 	//un metodo en el cual paso como parametro la conexion y devuelve un objeto ReporteroDAO (siempre el mismo objeto!)
 	public static ReporteroDAO singleReportero(Connection c) {
 		if(r==null) {
-		r=new ReporteroDAO();	
+		r=new ReporteroDAO(c);	
 		}
-		if (c == null) {
-			c = ConexBD_Agencia.establecerConexion();
-		}
+		
 		return r;
 	}
 
@@ -123,7 +125,6 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 				String nif_r=result.getString("nif_nie");
 				String tef_r=result.getString("telefono");
 				Reportero r=new Reportero();
-				r=new Reportero();
 				r.setId(id_r);
 				r.setNombreyApellidos(nom_r);
 				r.setNif(nif_r);

@@ -73,6 +73,8 @@ public class Principal {
 		CON.insertarSinID(con);
 		//estos metodos de concierto dan problemas
 		CON.buscarPorID(2);
+		
+		G.buscarTodos();
 
 		
 	}
