@@ -78,6 +78,14 @@ public class Gira {
 		return gira1;
 	}
 
+	public ArrayList<Concierto> getConciertos() {
+		return conciertos;
+	}
+
+	public void setConciertos(ArrayList<Concierto> conciertos) {
+		this.conciertos = conciertos;
+	}
+
 	//getters y setters de la clase con nombres coherentes 
 	public long getIdGira() {
 		return idGira;

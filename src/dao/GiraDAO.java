@@ -1,5 +1,9 @@
 package dao;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.mysql.cj.protocol.Resultset;
 
 import entidades.Gira;
 import utils.ConexBD_Agencia;
@@ -22,16 +25,18 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 	private static GiraDAO g;
 	
 	//constructor privado que llamaremos desde el metodo publico
-	private GiraDAO() {}
+	private GiraDAO(Connection c) {
+		if (c == null) {
+			c = ConexBD_Agencia.establecerConexion();
+		}}
 	
 	//metodo del cual devuelves una entidad del objeto y de paso le pasas la conexcion como argumento para usar los metodos Scrud
 	public static GiraDAO singleGira(Connection c) {
 		if(g==null) {
-		g=new GiraDAO();
+		g=new GiraDAO(c);
+		return g;
 		}
-		if (c == null) {
-			c = ConexBD_Agencia.establecerConexion();
-		}
+		
 		return g;
 	}
 	
@@ -93,12 +98,8 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 				gira.setNombreGira(nombre);
 				gira.setFechaApertura(fecha);
 				gira.setFechaCierre(fecha2);
-
-				
 			}
 			System.out.println("el concierto que ingreso es "+gira.toString()+"el id es "+gira.getIdGira());
-			
-			
 			c.close();
 		} catch (SQLException e) {
             System.out.println("se produjo una sql exception!");
@@ -112,7 +113,6 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 	@Override
 	public Gira buscarPorID(long id) {
 		Gira g=null;
-		Gira gira=null;
 		String select="select * from gira where id=?";
 		try {
 			if (this.c == null || this.c.isClosed())
@@ -125,7 +125,6 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 				String nom_g=result.getString("nombre_gira");
 				java.sql.Date fechaSQL =result.getDate("fecha_ini");
 				java.sql.Date fechaSQL2 =result.getDate("fecha_fin");
-				//bastante engorroso el pasar a un localDate pero consegui un metodo en stackoverflow
 				LocalDate fecha_l=fechaSQL.toLocalDate();
 				LocalDate fecha_l2=fechaSQL2.toLocalDate();
 				g=new Gira();
@@ -133,7 +132,6 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 				g.setNombreGira(nom_g);
 				g.setFechaApertura(fecha_l);
 				g.setFechaCierre(fecha_l2);
-
 			}	
 			System.out.println("el resultado de tu consulta es:"+g.toString());
 			c.close();
@@ -224,6 +222,32 @@ public class GiraDAO implements operacionesCRUD<Gira>{
 		    }
 		return conf;
 	}
+	
+	//metodo para exportar un fichero de texto apartir de un objeto Gira completo
+		public void exportarGira(Gira g) {
+			String ficherocon="Gira_"+g.getIdGira()+".txt";
+			GiraDAO G=new GiraDAO(ConexBD_Agencia.getCon());
+			Gira aux=G.buscarPorID(g.getIdGira());
+			if(aux != null) {
+				File fichero=new File(ficherocon);
+				FileWriter escribir;
+				BufferedWriter buff;
+				
+				try {
+					escribir=new FileWriter(fichero);
+					buff=new BufferedWriter(escribir);
+					
+				String exportacion="la gira exportada tiene el id: "+g.getIdGira()+"el nombre de la misma es: "+g.getNombreGira()+"inicio en la fecha: "+g.getFechaApertura()+" y termino en la fecha "+g.getFechaCierre();
+				buff.write(exportacion);
+				buff.flush();
+				buff.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
 
 
 }

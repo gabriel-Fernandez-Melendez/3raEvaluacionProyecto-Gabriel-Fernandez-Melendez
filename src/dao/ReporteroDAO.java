@@ -1,5 +1,9 @@
 package dao;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 
 import entidades.Reportero;
 import utils.ConexBD_Agencia;
@@ -20,7 +25,7 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 	//constructor privado y usando el constructor por defecto 
 	private ReporteroDAO(Connection c) {
 		if (c == null) {
-			c = ConexBD_Agencia.establecerConexion();
+			c = ConexBD_Agencia.getCon();
 			this.c=c;
 		}}
 	
@@ -113,10 +118,13 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
     //este metodo lee toda la tabla y mete los datos en una lista de objetos del tipo de la tabla (funciona)
 	@Override
 	public Collection<Reportero> buscarTodos() {
+		
 		List<Reportero> colecc = new ArrayList<Reportero>();
 		String select="select * from reportero";
 		Statement pstmt;
 		try {
+			if (this.c == null || this.c.isClosed())
+			this.c = ConexBD_Agencia.establecerConexion();
 			pstmt = c.createStatement();
 			ResultSet result = pstmt.executeQuery(select);
 			while(result.next()) {
@@ -189,6 +197,33 @@ public class ReporteroDAO implements operacionesCRUD<Reportero>{
 		    }
 		return conf;
 	}
+	
+	//metodo para exportar un fichero de texto apartir de un objeto Reportero completo
+			public void exportarReportero(Reportero r) {
+				String ficherocon="Reportero_"+r.getId()+".txt";
+				ReporteroDAO R=new ReporteroDAO(ConexBD_Agencia.getCon());
+				Reportero aux=R.buscarPorID(r.getId());
+				if(aux != null) {
+					File fichero=new File(ficherocon);
+					FileWriter escribir;
+					//buffered como clase envoltorio!
+					BufferedWriter buff;
+					
+					try {
+						escribir=new FileWriter(fichero);
+						buff=new BufferedWriter(escribir);
+						
+					String exportacion="el reportero exportado tiene como el id: "+r.getId()+"su nombre es: "+r.getNombreyApellidos()+"su nif es: "+r.getNif()+"y su telefono de contacto es: "+r.gettelefono();
+					buff.write(exportacion);
+					buff.flush();
+					buff.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
 
 
 

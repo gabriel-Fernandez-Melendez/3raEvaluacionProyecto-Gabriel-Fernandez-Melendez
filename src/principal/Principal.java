@@ -31,11 +31,11 @@ public class Principal {
 		//insertarConciertos();
 		
 		//prueba de creacion de una entidad con singeton
-		Connection c=ConexBD_Agencia.establecerConexion();
+		Connection c=ConexBD_Agencia.getCon();
 		//creo dos instancias de la clase pasando como argumento la conexion 
 		ReporteroDAO R=ReporteroDAO.singleReportero(c);
 		ReporteroDAO R2=ReporteroDAO.singleReportero(c);
-		Reportero r=new Reportero(6,"prueba","prueba","prueba");
+		Reportero r=new Reportero(8,"prueba","prueba","prueba");
 		//aqui imprimo por pantalla el hashcode del objeto y es la misma es que es el mismo objeto que lo estoy llamando ods veces (si lo es,funciona!)
 		System.out.println(R.hashCode());
 		System.out.println(R2.hashCode());
@@ -44,7 +44,7 @@ public class Principal {
 		//metodo para buscar por id y añadi un system.out.print para ver el resultado de la consulta en consola(funciona!)
 		//R.buscarPorID(1);
 		//prueba del metodo de la coleccion(funciona!)
-		///R.buscarTodos();
+		R.buscarTodos();
 		//metodo de update (este no termina de funcionar)
 		//Reportero r=new Reportero(1,"vwfv","efve","svw");
 		//R.modificar(r);
@@ -54,22 +54,22 @@ public class Principal {
 		//R.insertarConID(r);
 		
 		GiraDAO G=GiraDAO.singleGira(c);
-		Gira g=new Gira("prueba modificar",LocalDate.of(2016, 8, 23),LocalDate.of(2018, 8, 24));
+		Gira g=new Gira(12,"prueba modificar",LocalDate.of(2016, 8, 23),LocalDate.of(2018, 8, 24));
 		
 		//metodo de insercion de gira(funciona)
 		//G.insertarConID(g);
 		
 		//funciona!
-		//G.buscarPorID(2);
+		G.buscarPorID(2);
 		
 		//funciona!
 		//G.eliminar(g);
 		
 		//prueba de metodos de concierto
-		//ConciertoDAO CON=ConciertoDAO.singleConcierto(c);
-		//Concierto con=new Concierto(11,LocalDate.of(2016, 8, 19),r,g);
+		ConciertoDAO CON=ConciertoDAO.singleConcierto(c);
+		Concierto con=new Concierto(41,LocalDate.of(2016, 8, 19),r,g);
 		
-		//CON.insertarConID(con);
+		CON.insertarConID(con);
 		//CON.insertarSinID(con);
 		//estos metodos de concierto dan problemas
 		//CON.buscarPorID(6);
@@ -77,6 +77,7 @@ public class Principal {
 		G.insertarSinID(g);
 		
 
+		CON.buscarTodos();
 
 		
 	}

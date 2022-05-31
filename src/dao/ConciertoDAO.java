@@ -1,5 +1,9 @@
 package dao;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,16 +25,18 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 	private static ConciertoDAO con;
 	
 	//constructor por defecto privado
-	private ConciertoDAO() {}
+	private ConciertoDAO(Connection c) {
+		if (c == null) {
+			c = ConexBD_Agencia.establecerConexion();
+		}
+		}
 	
 	//metodo que llame al constructor y devuelva una instancia del objeto que necesita como argumento un objeto de tipo conexion
 	public static ConciertoDAO singleConcierto(Connection c) {
 		if(con==null) {
-		con=new ConciertoDAO();	
+		con=new ConciertoDAO(c);	
 		}
-		if (c == null) {
-			c = ConexBD_Agencia.establecerConexion();
-		}
+		
 		return con;
 	}
 
@@ -69,6 +75,8 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 			if (this.c == null || this.c.isClosed())
 				this.c = ConexBD_Agencia.establecerConexion();
 			PreparedStatement pstmt = c.prepareStatement(insert);
+			// me daba problemas por que no se me ocurria el como extraer los datos de un objeto complejo que formara parte de otro 
+			//ahora no tengo problema con ello!
 			java.sql.Date fechaSQL = java.sql.Date.valueOf(con.getFechayhor());
 			pstmt.setDate(1, fechaSQL);
 			pstmt.setLong(2,con.getReporteroConcierto().getId());
@@ -133,7 +141,7 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 				java.sql.Date fechaSQL =result.getDate("fecha_concierto");
 				LocalDate fecha=fechaSQL.toLocalDate();
 				long id_r=result.getLong("id_reportero");
-				long id_g=result.getLong("id_concierto");
+				long id_g=result.getLong("id_gira");
 				Concierto con=new Concierto();
 				//OJO  esta es la implementacion de una relacion 1:n con la que tenia problemas , me he dado cuenta de la necesidad
 				// de declarar los objetos de el tipo necesarios para settear sus parametros y luego pasar ese objeto "entero" al constructor de concierto
@@ -159,7 +167,7 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 
 	@Override
 	public boolean modificar(Concierto con) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -167,6 +175,35 @@ public class ConciertoDAO implements operacionesCRUD<Concierto> {
 	public boolean eliminar(Concierto con) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	//metodo para exportar un fichero de texto apartir de un objeto concierto completo
+	public void exportarConcierto(Concierto con) {
+		String ficherocon="Concierto_"+con.getIdConcierto()+".txt";
+		ConciertoDAO CON=new ConciertoDAO(ConexBD_Agencia.getCon());
+		Concierto aux=CON.buscarPorID(con.getIdConcierto());
+		if(aux != null) {
+			File fichero=new File(ficherocon);
+			FileWriter escribir;
+			BufferedWriter buff;
+			
+			try {
+				escribir=new FileWriter(fichero);
+				buff=new BufferedWriter(escribir);
+				
+			String exportacion="el concierto exportado tiene el id: "+con.getIdConcierto()+"fue efectuado en la fecha: "+con.getFechayhor()+"el id del reportero que la documento es: "+con.getReporteroConcierto().getId()+"";
+			if(con.getGiraconciertos().getIdGira() > 0) {
+				exportacion += "el if de la gira del concierto es: "+con.getGiraconciertos().getIdGira();
+			}
+			buff.write(exportacion);
+			buff.flush();
+			buff.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }
