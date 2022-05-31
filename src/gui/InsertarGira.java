@@ -25,7 +25,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
+
+//esta venta ha sido probada y funciona correctamente , inserta los datos!
 public class InsertarGira extends JFrame {
 
 	private JPanel contentPane;
@@ -57,6 +60,7 @@ public class InsertarGira extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle("insertar Gira");
 		
 		JLabel lblNewLabel_1 = new JLabel("Nombre*:");
 		lblNewLabel_1.setBounds(24, 73, 81, 14);
@@ -73,7 +77,7 @@ public class InsertarGira extends JFrame {
 		
 		JSpinner spinner = new JSpinner();
 		spinner.setModel(new SpinnerDateModel(new Date(-315622800000L), null, null, Calendar.DAY_OF_YEAR));
-		spinner.setBounds(86, 106, 140, 20);
+		spinner.setBounds(86, 106, 150, 20);
 		contentPane.add(spinner);
 		
 		JLabel lblNewLabel_3 = new JLabel("fecha cierre*:");
@@ -82,7 +86,7 @@ public class InsertarGira extends JFrame {
 		
 		JSpinner spinner_1 = new JSpinner();
 		spinner_1.setModel(new SpinnerDateModel(new Date(-315622800000L), null, null, Calendar.DAY_OF_YEAR));
-		spinner_1.setBounds(86, 135, 145, 20);
+		spinner_1.setBounds(86, 134, 151, 20);
 		contentPane.add(spinner_1);
 		
 		JButton btnNewButton = new JButton("cancelar");
@@ -106,8 +110,7 @@ public class InsertarGira extends JFrame {
 				String titulo = "";
 				String msj = "";
 				String errores = "";
-				//creo  una nueva giras
-				
+
 				String nombre = textField_1.getText();
 				valido = Validaciones.validarNombre(nombre);
 				if (!valido) {
@@ -127,7 +130,7 @@ public class InsertarGira extends JFrame {
 					errores += "la fecha que inserto no es valida!";
 					lblNewLabel_2.setForeground(Color.RED);
 				} else {
-					LocalDate fechag1=fechaLD;
+					LocalDate fechald= fechaLD;
 				}
 				valido = false;
 				java.util.Date fecha2 = (Date) spinner_1.getValue();
@@ -139,15 +142,14 @@ public class InsertarGira extends JFrame {
 					errores += "la fecha que inserto no es valida!";
 					lblNewLabel_3.setForeground(Color.RED);
 				} else {
-					// me daba problemas para en insert into asi que he puesto  aqui una variable que al final  no se usa por que le pongo los atributos al objeto gira al final del todo
-					LocalDate fechag2=fechaLD2;
+				
 				}
 			
 				GiraDAO G=GiraDAO.singleGira(ConexBD_Agencia.getCon());
 				Gira g =new Gira(nombre,fechaLD,fechaLD2);
 				long id=G.insertarSinID(g);
 				if(id>0) {
-					System.out.println("se inserto en nuevo socio su id en la base de datos es: " + id);
+					System.out.println("se inserto una nueva gira en la BD ");
 				}
 				else {
 					titulo = "ERROR al cerrar la Prueba en la BD";
@@ -158,6 +160,11 @@ public class InsertarGira extends JFrame {
 		});
 		btnNewButton_1.setBounds(63, 196, 89, 23);
 		contentPane.add(btnNewButton_1);
+		
+		JLabel lblNewLabel = new JLabel("datos de la Gira:");
+		lblNewLabel.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 25));
+		lblNewLabel.setBounds(24, 11, 319, 48);
+		contentPane.add(lblNewLabel);
 		
 		
 	}

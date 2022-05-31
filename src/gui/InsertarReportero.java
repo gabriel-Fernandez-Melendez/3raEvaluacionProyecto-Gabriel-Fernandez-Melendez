@@ -19,7 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
+//frame probado , funciona he inserta datos en la base de datos sin problema 
 public class InsertarReportero extends JFrame {
 
 	private JPanel contentPane;
@@ -53,31 +55,32 @@ public class InsertarReportero extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle("insertar Reportero");
 		
 		JLabel lblNewLabel = new JLabel("nombre y apellidos*:");
-		lblNewLabel.setBounds(47, 33, 101, 14);
+		lblNewLabel.setBounds(35, 111, 101, 14);
 		contentPane.add(lblNewLabel);
 		
 		textField = new JTextField();
-		textField.setBounds(146, 30, 144, 20);
+		textField.setBounds(146, 108, 144, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("nif*:");
-		lblNewLabel_1.setBounds(121, 73, 46, 14);
+		lblNewLabel_1.setBounds(75, 152, 46, 14);
 		contentPane.add(lblNewLabel_1);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(146, 70, 122, 20);
+		textField_1.setBounds(146, 149, 122, 20);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("telefono*:");
-		lblNewLabel_2.setBounds(87, 108, 61, 14);
+		lblNewLabel_2.setBounds(75, 188, 61, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(146, 105, 122, 20);
+		textField_2.setBounds(146, 185, 122, 20);
 		contentPane.add(textField_2);
 		textField_2.setColumns(10);
 		
@@ -92,7 +95,7 @@ public class InsertarReportero extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setBounds(272, 197, 89, 23);
+		btnNewButton.setBounds(266, 227, 89, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("aceptar");
@@ -151,7 +154,12 @@ public class InsertarReportero extends JFrame {
 
 			}
 		});
-		btnNewButton_1.setBounds(78, 197, 89, 23);
+		btnNewButton_1.setBounds(60, 227, 89, 23);
 		contentPane.add(btnNewButton_1);
+		
+		JLabel lblNewLabel_3 = new JLabel("inserta un reportero:");
+		lblNewLabel_3.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 24));
+		lblNewLabel_3.setBounds(23, 30, 324, 52);
+		contentPane.add(lblNewLabel_3);
 	}
 }
